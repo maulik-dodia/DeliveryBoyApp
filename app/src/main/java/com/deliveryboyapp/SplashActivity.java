@@ -1,6 +1,5 @@
 package com.deliveryboyapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -19,9 +18,8 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
 
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
+                navigateToOtherScreen(SplashActivity.this, DeliveryListActivity.class,
+                        false, null, true);
 
                 displayToastMessage(getString(R.string.str_login_success));
                 hideLoading();

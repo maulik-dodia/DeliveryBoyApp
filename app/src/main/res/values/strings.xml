@@ -1,8 +1,13 @@
 <resources>
+
     <string name="app_name">DeliveryBoyApp</string>
 
     <string name="str_loading">Logging you in</string>
     <string name="str_login_success">Login Success</string>
     <string name="str_things_to_deliver">Things to Deliver</string>
     <string name="str_delivery_details">Delivery Details</string>
+    <string name="str_delivery_destination">Delivery Destination</string>
+    <string name="str_customer_address">Customer Address</string>
+    <string name="str_description">Description</string>
+
 </resources>
