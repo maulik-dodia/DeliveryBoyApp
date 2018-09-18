@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DeliveryBoyApp</string>
+
+    <string name="str_loading">Logging you in</string>
+    <string name="str_login_success">Login Success</string>
+    <string name="str_things_to_deliver">Things to Deliver</string>
+    <string name="str_delivery_details">Delivery Details</string>
+</resources>
