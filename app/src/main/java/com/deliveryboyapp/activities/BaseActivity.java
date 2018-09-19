@@ -16,6 +16,8 @@ import static com.deliveryboyapp.Constants.KEY_PUT_EXTRA;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private static String TAG = BaseActivity.class.getSimpleName();
+
     protected APIEndPoints mApiEndPoints;
     protected ProgressDialog mProgressDialog;
 
@@ -26,7 +28,8 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupProgressDialog();
-        mApiEndPoints = RetrofitClient.getInstance().create(APIEndPoints.class);
+
+        mApiEndPoints = RetrofitClient.getInstance(this).create(APIEndPoints.class);
     }
 
     private void setupProgressDialog() {

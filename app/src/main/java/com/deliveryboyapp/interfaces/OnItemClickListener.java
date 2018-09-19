@@ -1,4 +1,4 @@
-package com.deliveryboyapp;
+package com.deliveryboyapp.interfaces;
 
 import android.view.View;
 

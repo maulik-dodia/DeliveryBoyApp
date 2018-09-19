@@ -5,18 +5,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.deliveryboyapp.OnItemClickListener;
 import com.deliveryboyapp.R;
 import com.deliveryboyapp.adapters.DeliveriesAdapter;
 import com.deliveryboyapp.beans.Delivery;
+import com.deliveryboyapp.interfaces.OnItemClickListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.deliveryboyapp.Constants.LIMIT;
+import static com.deliveryboyapp.Constants.OFFSET;
+import static com.deliveryboyapp.Constants.STR_LIMIT;
+import static com.deliveryboyapp.Constants.STR_OFFSET;
 
 public class DeliveryListActivity extends BaseActivity {
 
@@ -38,12 +45,28 @@ public class DeliveryListActivity extends BaseActivity {
 
     private void getDeliveryData() {
 
+        Map<String, String> data = new HashMap<>();
+        data.put(STR_LIMIT, String.valueOf(LIMIT));
+        data.put(STR_OFFSET, String.valueOf(OFFSET));
+
         displayLoading();
 
-        mApiEndPoints.getDeliveries().enqueue(new Callback<List<Delivery>>() {
+        mApiEndPoints.getDeliveries(data).enqueue(new Callback<List<Delivery>>() {
 
             @Override
             public void onResponse(Call<List<Delivery>> call, Response<List<Delivery>> deliveryResponse) {
+
+                if (deliveryResponse.raw().cacheResponse() != null) {
+                    // true: response was served from cache
+
+                    Log.e(TAG, "From Cache");
+                }
+
+                if (deliveryResponse.raw().networkResponse() != null) {
+                    // true: response was served from network/server
+
+                    Log.e(TAG, "From Network");
+                }
 
                 populateRecyclerView(deliveryResponse.body());
 
