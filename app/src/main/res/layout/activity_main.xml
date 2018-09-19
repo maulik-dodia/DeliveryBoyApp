@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/dp_5"
-    tools:context=".DeliveryListActivity">
+    tools:context=".activities.DeliveryListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_deliveries"

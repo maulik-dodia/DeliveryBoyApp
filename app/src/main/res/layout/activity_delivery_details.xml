@@ -4,38 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    tools:context=".activities.DeliveryDetailsActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dp_5"
-        android:orientation="vertical"
-        android:weightSum="1"
-        tools:context=".DeliveryDetailsActivity">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="350dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7">
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map"
             android:layout_marginTop="@dimen/dp_5"
-            android:layout_weight="0.3"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
                 android:text="@string/str_customer_address"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -45,13 +38,14 @@
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/str_customer_address"
+                android:padding="@dimen/dp_5"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
+                android:padding="@dimen/dp_5"
                 android:text="@string/str_description"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -61,9 +55,9 @@
                 android:id="@+id/tv_desc_full"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="S 904, 9th Floor, World Trade Center, Brigade Gateway Campus, Dr. Rajkumar Road, Malleswaram (W), Bengaluru, Karnataka 560055"
+                android:padding="@dimen/dp_5"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </ScrollView>

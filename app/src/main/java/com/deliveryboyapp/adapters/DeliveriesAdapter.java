@@ -3,6 +3,7 @@ package com.deliveryboyapp.adapters;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,19 @@ import com.deliveryboyapp.R;
 import com.deliveryboyapp.beans.Delivery;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DeliveriesAdapter extends RecyclerView.Adapter<DeliveriesAdapter.ViewHolder> {
 
-    private ArrayList<Delivery> mDeliveryArrayList;
+    private String TAG = DeliveriesAdapter.class.getSimpleName();
+
+    private List<Delivery> mDeliveryArrayList;
     private OnItemClickListener mOnItemClickListener;
 
-    public DeliveriesAdapter(ArrayList<Delivery> deliveryArrayList, OnItemClickListener itemClickListener) {
+    public DeliveriesAdapter(List<Delivery> deliveryArrayList, OnItemClickListener itemClickListener) {
         this.mDeliveryArrayList = deliveryArrayList;
         this.mOnItemClickListener = itemClickListener;
     }

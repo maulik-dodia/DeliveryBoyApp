@@ -1,8 +1,10 @@
-package com.deliveryboyapp;
+package com.deliveryboyapp.activities;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.deliveryboyapp.Constants;
+import com.deliveryboyapp.R;
 import com.deliveryboyapp.beans.Delivery;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,11 +53,12 @@ public class DeliveryDetailsActivity extends BaseActivity implements OnMapReadyC
 
         Double lat = mDelivery.getLocation().getLat();
         Double lng = mDelivery.getLocation().getLng();
+        String address = mDelivery.getLocation().getAddress();
 
         // Add a marker in Sydney and move the camera
         LatLng destinationLatLng = new LatLng(lat, lng);
 
-        googleMap.addMarker(new MarkerOptions().position(destinationLatLng).title(getString(R.string.str_delivery_destination)));
+        googleMap.addMarker(new MarkerOptions().position(destinationLatLng).title(address));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 13.0f));
     }
 }
