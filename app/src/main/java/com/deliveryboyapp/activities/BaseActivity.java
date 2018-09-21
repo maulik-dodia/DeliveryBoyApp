@@ -9,8 +9,6 @@ import android.widget.Toast;
 
 import com.deliveryboyapp.R;
 import com.deliveryboyapp.beans.Delivery;
-import com.deliveryboyapp.net.APIEndPoints;
-import com.deliveryboyapp.net.RetrofitClient;
 
 import static com.deliveryboyapp.Constants.KEY_PUT_EXTRA;
 
@@ -18,7 +16,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private static String TAG = BaseActivity.class.getSimpleName();
 
-    protected APIEndPoints mApiEndPoints;
+    //protected APIEndPoints mApiEndPoints;
     protected ProgressDialog mProgressDialog;
 
     @Override
@@ -29,7 +27,7 @@ public class BaseActivity extends AppCompatActivity {
 
         setupProgressDialog();
 
-        mApiEndPoints = RetrofitClient.getInstance(this).create(APIEndPoints.class);
+        //mApiEndPoints = RetrofitClient.getInstance(this).create(APIEndPoints.class);
     }
 
     private void setupProgressDialog() {

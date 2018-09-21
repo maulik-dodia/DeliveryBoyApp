@@ -1,29 +1,21 @@
 package com.deliveryboyapp.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.deliveryboyapp.R;
 import com.deliveryboyapp.adapters.DeliveriesAdapter;
 import com.deliveryboyapp.beans.Delivery;
 import com.deliveryboyapp.interfaces.OnItemClickListener;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.deliveryboyapp.net.DeliveriesViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.deliveryboyapp.Constants.LIMIT;
-import static com.deliveryboyapp.Constants.OFFSET;
-import static com.deliveryboyapp.Constants.STR_LIMIT;
-import static com.deliveryboyapp.Constants.STR_OFFSET;
 
 public class DeliveryListActivity extends BaseActivity {
 
@@ -40,52 +32,12 @@ public class DeliveryListActivity extends BaseActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        getDeliveryData();
-    }
+        rv_deliveries.setLayoutManager(new LinearLayoutManager(this));
+        rv_deliveries.setHasFixedSize(true);
 
-    private void getDeliveryData() {
+        DeliveriesViewModel deliveriesViewModel = ViewModelProviders.of(this).get(DeliveriesViewModel.class);
 
-        Map<String, String> data = new HashMap<>();
-        data.put(STR_LIMIT, String.valueOf(LIMIT));
-        data.put(STR_OFFSET, String.valueOf(OFFSET));
-
-        displayLoading();
-
-        mApiEndPoints.getDeliveries(data).enqueue(new Callback<List<Delivery>>() {
-
-            @Override
-            public void onResponse(Call<List<Delivery>> call, Response<List<Delivery>> deliveryResponse) {
-
-                if (deliveryResponse.raw().cacheResponse() != null) {
-                    // true: response was served from cache
-
-                    Log.e(TAG, "From Cache");
-                }
-
-                if (deliveryResponse.raw().networkResponse() != null) {
-                    // true: response was served from network/server
-
-                    Log.e(TAG, "From Network");
-                }
-
-                populateRecyclerView(deliveryResponse.body());
-
-                displayToastMessage(getString(R.string.str_success));
-                hideLoading();
-            }
-
-            @Override
-            public void onFailure(Call<List<Delivery>> call, Throwable throwable) {
-
-                displayToastMessage(throwable.getMessage());
-                hideLoading();
-            }
-        });
-    }
-
-    private void populateRecyclerView(List<Delivery> deliveryList) {
-
-        DeliveriesAdapter deliveriesAdapter = new DeliveriesAdapter(deliveryList, new OnItemClickListener() {
+        final DeliveriesAdapter deliveriesAdapter = new DeliveriesAdapter(new OnItemClickListener() {
             @Override
             public void onItemClick(Delivery delivery) {
 
@@ -93,7 +45,14 @@ public class DeliveryListActivity extends BaseActivity {
                         true, delivery, false);
             }
         });
-        rv_deliveries.setLayoutManager(new LinearLayoutManager(this));
+
+        deliveriesViewModel.itemPagedList.observe(this, new Observer<PagedList<Delivery>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<Delivery> deliveries) {
+                deliveriesAdapter.submitList(deliveries);
+            }
+        });
+
         rv_deliveries.setAdapter(deliveriesAdapter);
     }
 }

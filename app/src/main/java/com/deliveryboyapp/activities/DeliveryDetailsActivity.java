@@ -39,7 +39,6 @@ public class DeliveryDetailsActivity extends BaseActivity implements OnMapReadyC
         String objAsJson = bundle.getString(Constants.KEY_PUT_EXTRA);
         mDelivery = Delivery.fromJson(objAsJson);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -55,7 +54,6 @@ public class DeliveryDetailsActivity extends BaseActivity implements OnMapReadyC
         Double lng = mDelivery.getLocation().getLng();
         String address = mDelivery.getLocation().getAddress();
 
-        // Add a marker in Sydney and move the camera
         LatLng destinationLatLng = new LatLng(lat, lng);
 
         googleMap.addMarker(new MarkerOptions().position(destinationLatLng).title(address));
