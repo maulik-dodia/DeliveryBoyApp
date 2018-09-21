@@ -9,6 +9,11 @@ import android.widget.Toast;
 
 import com.deliveryboyapp.R;
 import com.deliveryboyapp.beans.Delivery;
+import com.deliveryboyapp.di.components.DaggerApplicationComponent;
+import com.deliveryboyapp.net.APIEndPoints;
+import com.deliveryboyapp.net.ViewModelFactory;
+
+import javax.inject.Inject;
 
 import static com.deliveryboyapp.Constants.KEY_PUT_EXTRA;
 
@@ -16,7 +21,12 @@ public class BaseActivity extends AppCompatActivity {
 
     private static String TAG = BaseActivity.class.getSimpleName();
 
-    //protected APIEndPoints mApiEndPoints;
+    @Inject
+    APIEndPoints mApiEndPoints;
+
+    @Inject
+    ViewModelFactory mViewModelFactory;
+
     protected ProgressDialog mProgressDialog;
 
     @Override
@@ -24,10 +34,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        DaggerApplicationComponent.builder().build().inject(this);
 
         setupProgressDialog();
-
-        //mApiEndPoints = RetrofitClient.getInstance(this).create(APIEndPoints.class);
     }
 
     private void setupProgressDialog() {

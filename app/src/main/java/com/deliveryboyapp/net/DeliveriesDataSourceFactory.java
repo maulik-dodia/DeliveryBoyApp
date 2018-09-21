@@ -10,10 +10,16 @@ public class DeliveriesDataSourceFactory extends DataSource.Factory {
 
     private MutableLiveData<PageKeyedDataSource<Integer, Delivery>> dataSourceMutableLiveData = new MutableLiveData<>();
 
+    APIEndPoints apiEndPoints;
+
+    public DeliveriesDataSourceFactory(APIEndPoints apiEndPoints) {
+        this.apiEndPoints = apiEndPoints;
+    }
+
     @Override
     public DataSource<Integer, Delivery> create() {
 
-        DeliveriesDataSource deliveriesDataSource = new DeliveriesDataSource();
+        DeliveriesDataSource deliveriesDataSource = new DeliveriesDataSource(apiEndPoints);
 
         dataSourceMutableLiveData.postValue(deliveriesDataSource);
 

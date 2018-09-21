@@ -2,10 +2,9 @@ package com.deliveryboyapp.net;
 
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.deliveryboyapp.beans.Delivery;
-import com.deliveryboyapp.net.APIEndPoints;
-import com.deliveryboyapp.net.RetrofitClient;
 
 import java.util.List;
 
@@ -18,16 +17,26 @@ import static com.deliveryboyapp.Constants.LIMIT;
 
 public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery> {
 
-    private APIEndPoints mApiEndPoints = RetrofitClient.getInstance().create(APIEndPoints.class);
+    private String TAG = DeliveriesDataSource.class.getSimpleName();
+
+    private APIEndPoints mApiEndPointsTest = RetrofitClient.getInstance().create(APIEndPoints.class);
+
+    private APIEndPoints mApiEndPoints;
+
+    public DeliveriesDataSource(APIEndPoints mApiEndPoints) {
+        this.mApiEndPoints = mApiEndPoints;
+    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Delivery> callback) {
 
-        mApiEndPoints.getDeliveries(FIRST_PAGE, LIMIT)
+        mApiEndPointsTest.getDeliveries(FIRST_PAGE, LIMIT)
                 .enqueue(new Callback<List<Delivery>>() {
 
                     @Override
                     public void onResponse(Call<List<Delivery>> call, Response<List<Delivery>> response) {
+
+                        Log.e(TAG, "Size: " + response.body().size());
 
                         if (response.body() != null) {
                             callback.onResult(response.body(), null, FIRST_PAGE + 1);
@@ -44,7 +53,7 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
     @Override
     public void loadBefore(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Delivery> callback) {
 
-        mApiEndPoints.getDeliveries(params.key, LIMIT)
+        mApiEndPointsTest.getDeliveries(params.key, LIMIT)
                 .enqueue(new Callback<List<Delivery>>() {
 
                     @Override
@@ -67,7 +76,7 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Delivery> callback) {
 
-        mApiEndPoints.getDeliveries(params.key, LIMIT)
+        mApiEndPointsTest.getDeliveries(params.key, LIMIT)
                 .enqueue(new Callback<List<Delivery>>() {
 
                     @Override
