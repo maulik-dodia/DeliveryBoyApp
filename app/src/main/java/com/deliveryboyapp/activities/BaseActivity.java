@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.deliveryboyapp.ApplicationClass;
 import com.deliveryboyapp.R;
 import com.deliveryboyapp.beans.Delivery;
-import com.deliveryboyapp.di.components.DaggerApplicationComponent;
 import com.deliveryboyapp.net.ViewModelFactory;
 
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        DaggerApplicationComponent.builder().build().inject(this);
+        ((ApplicationClass) getApplication()).getApplicationComponent().inject(this);
 
         setupProgressDialog();
     }

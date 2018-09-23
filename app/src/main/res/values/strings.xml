@@ -7,6 +7,7 @@
     <string name="str_delivery_details">Delivery Details</string>
 
     // Other Strings
+    <string name="str_retry">Retry</string>
     <string name="str_success">Success</string>
     <string name="str_description">Description</string>
     <string name="str_customer_address">Customer Address</string>
@@ -14,5 +15,6 @@
     <string name="str_no_content_error">No content available!</string>
     <string name="str_internet_error">Internet is not available!</string>
     <string name="str_wait_msg">Wait.. Getting your deliveries..</string>
+    <string name="str_no_internet">No Internet. Check your network!</string>
 
 </resources>

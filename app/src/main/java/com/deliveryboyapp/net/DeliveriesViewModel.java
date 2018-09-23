@@ -17,7 +17,7 @@ public class DeliveriesViewModel extends ViewModel {
     private DeliveriesDataSourceFactory mDeliveriesDataSourceFactory;
 
     private LiveData<String> mLiveDataStatus;
-    public LiveData<PagedList<Delivery>> mLiveDataPagedList;
+    private LiveData<PagedList<Delivery>> mLiveDataPagedList;
 
     DeliveriesViewModel(APIEndPoints apiEndPoints) {
 
