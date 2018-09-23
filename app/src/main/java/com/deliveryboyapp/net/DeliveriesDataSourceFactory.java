@@ -6,27 +6,24 @@ import android.arch.paging.PageKeyedDataSource;
 
 import com.deliveryboyapp.beans.Delivery;
 
-public class DeliveriesDataSourceFactory extends DataSource.Factory {
-
-    private MutableLiveData<PageKeyedDataSource<Integer, Delivery>> dataSourceMutableLiveData = new MutableLiveData<>();
+public class DeliveriesDataSourceFactory extends DataSource.Factory <Integer, Delivery> {
 
     private APIEndPoints mApiEndPoints;
+    private MutableLiveData<DeliveriesDataSource> mDataSourceMutableLiveData;
 
     DeliveriesDataSourceFactory(APIEndPoints apiEndPoints) {
         this.mApiEndPoints = apiEndPoints;
+        mDataSourceMutableLiveData = new MutableLiveData<>();
     }
 
     @Override
     public DataSource<Integer, Delivery> create() {
-
         DeliveriesDataSource deliveriesDataSource = new DeliveriesDataSource(mApiEndPoints);
-
-        dataSourceMutableLiveData.postValue(deliveriesDataSource);
-
+        mDataSourceMutableLiveData.postValue(deliveriesDataSource);
         return deliveriesDataSource;
     }
 
-    public MutableLiveData<PageKeyedDataSource<Integer, Delivery>> getDataSourceMutableLiveData() {
-        return dataSourceMutableLiveData;
+    public MutableLiveData<DeliveriesDataSource> getDataSourceMutableLiveData() {
+        return mDataSourceMutableLiveData;
     }
 }

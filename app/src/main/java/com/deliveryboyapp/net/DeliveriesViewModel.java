@@ -1,6 +1,8 @@
 package com.deliveryboyapp.net;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PageKeyedDataSource;
@@ -12,21 +14,33 @@ import static com.deliveryboyapp.Constants.LIMIT;
 
 public class DeliveriesViewModel extends ViewModel {
 
-    public LiveData<PagedList<Delivery>> itemPagedList;
-    private LiveData<PageKeyedDataSource<Integer, Delivery>> liveDataSource;
+    private DeliveriesDataSourceFactory mDeliveriesDataSourceFactory;
 
-    public DeliveriesViewModel(APIEndPoints apiEndPoints) {
+    private LiveData<String> mLiveDataStatus;
+    public LiveData<PagedList<Delivery>> mLiveDataPagedList;
 
-        DeliveriesDataSourceFactory deliveriesDataSourceFactory = new DeliveriesDataSourceFactory(apiEndPoints);
+    DeliveriesViewModel(APIEndPoints apiEndPoints) {
 
-        liveDataSource = deliveriesDataSourceFactory.getDataSourceMutableLiveData();
+        mLiveDataStatus = new MutableLiveData<>();
+        mDeliveriesDataSourceFactory = new DeliveriesDataSourceFactory(apiEndPoints);
 
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
                         .setEnablePlaceholders(false)
                         .setPageSize(LIMIT).build();
 
-        itemPagedList = (new LivePagedListBuilder(deliveriesDataSourceFactory, pagedListConfig))
+        mLiveDataPagedList = (new LivePagedListBuilder(mDeliveriesDataSourceFactory, pagedListConfig))
                 .build();
+
+        mLiveDataStatus = Transformations
+                .switchMap(mDeliveriesDataSourceFactory.getDataSourceMutableLiveData(), DeliveriesDataSource::getLiveDataStatus);
+    }
+
+    public LiveData<String> getLiveDataStatus() {
+        return mLiveDataStatus;
+    }
+
+    public LiveData<PagedList<Delivery>> getListLiveData() {
+        return mLiveDataPagedList;
     }
 }
