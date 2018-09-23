@@ -57,17 +57,4 @@ public class Delivery {
         Gson gson = new Gson();
         return gson.fromJson(json, Delivery.class);
     }
-
-    public static DiffUtil.ItemCallback<Delivery> DIFF_CALLBACK = new DiffUtil.ItemCallback<Delivery>() {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull Delivery oldItem, @NonNull Delivery newItem) {
-            return oldItem.id.equalsIgnoreCase(newItem.id);
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Delivery oldItem, @NonNull Delivery newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
 }

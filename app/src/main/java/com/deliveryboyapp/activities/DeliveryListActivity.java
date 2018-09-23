@@ -13,6 +13,9 @@ import com.deliveryboyapp.adapters.DeliveriesAdapter;
 import com.deliveryboyapp.beans.Delivery;
 import com.deliveryboyapp.interfaces.OnItemClickListener;
 import com.deliveryboyapp.net.DeliveriesViewModel;
+import com.deliveryboyapp.net.ViewModelFactory;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +38,7 @@ public class DeliveryListActivity extends BaseActivity {
         rv_deliveries.setLayoutManager(new LinearLayoutManager(this));
         rv_deliveries.setHasFixedSize(true);
 
-        DeliveriesViewModel deliveriesViewModel = ViewModelProviders.of(this).get(DeliveriesViewModel.class);
+        DeliveriesViewModel deliveriesViewModel = ViewModelProviders.of(this, mViewModelFactory).get(DeliveriesViewModel.class);
 
         final DeliveriesAdapter deliveriesAdapter = new DeliveriesAdapter(new OnItemClickListener() {
             @Override

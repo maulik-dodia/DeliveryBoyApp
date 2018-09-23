@@ -18,7 +18,11 @@ import static com.deliveryboyapp.Constants.LIMIT;
 
 public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery> {
 
-    private APIEndPoints mApiEndPoints = RetrofitClient.getInstance().create(APIEndPoints.class);
+    private APIEndPoints mApiEndPoints;
+
+    DeliveriesDataSource(APIEndPoints apiEndPoints) {
+        this.mApiEndPoints = apiEndPoints;
+    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Delivery> callback) {

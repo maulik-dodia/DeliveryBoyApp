@@ -15,9 +15,9 @@ public class DeliveriesViewModel extends ViewModel {
     public LiveData<PagedList<Delivery>> itemPagedList;
     private LiveData<PageKeyedDataSource<Integer, Delivery>> liveDataSource;
 
-    public DeliveriesViewModel() {
+    public DeliveriesViewModel(APIEndPoints apiEndPoints) {
 
-        DeliveriesDataSourceFactory deliveriesDataSourceFactory = new DeliveriesDataSourceFactory();
+        DeliveriesDataSourceFactory deliveriesDataSourceFactory = new DeliveriesDataSourceFactory(apiEndPoints);
 
         liveDataSource = deliveriesDataSourceFactory.getDataSourceMutableLiveData();
 
