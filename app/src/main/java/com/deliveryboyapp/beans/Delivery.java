@@ -1,8 +1,5 @@
 package com.deliveryboyapp.beans;
 
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
-
 import com.google.gson.Gson;
 
 public class Delivery {

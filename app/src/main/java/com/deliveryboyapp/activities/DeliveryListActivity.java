@@ -38,18 +38,20 @@ public class DeliveryListActivity extends BaseActivity {
         rv_deliveries.setLayoutManager(new LinearLayoutManager(this));
         rv_deliveries.setHasFixedSize(true);
 
-        DeliveriesViewModel deliveriesViewModel = ViewModelProviders.of(this, mViewModelFactory).get(DeliveriesViewModel.class);
-
-        final DeliveriesAdapter deliveriesAdapter = new DeliveriesAdapter(
+        DeliveriesAdapter deliveriesAdapter = new DeliveriesAdapter(
                 delivery -> navigateToOtherScreen(DeliveryListActivity.this, DeliveryDetailsActivity.class,
                         true, delivery, false));
+
+        DeliveriesViewModel deliveriesViewModel = ViewModelProviders.of(this, mViewModelFactory).get(DeliveriesViewModel.class);
 
         deliveriesViewModel.getLiveDataStatus().observe(this, status -> {
 
             if (Objects.requireNonNull(status).equalsIgnoreCase(Constants.STR_LOADING)) {
+
                 displayLoading();
 
             } else if (status.equalsIgnoreCase(Constants.STR_LOADED)) {
+
                 hideLoading();
                 tv_no_internet.setVisibility(View.GONE);
                 rv_deliveries.setVisibility(View.VISIBLE);
@@ -73,26 +75,4 @@ public class DeliveryListActivity extends BaseActivity {
         deliveriesViewModel.getListLiveData().observe(this, deliveries -> deliveriesAdapter.submitList(deliveries));
         rv_deliveries.setAdapter(deliveriesAdapter);
     }
-
-    /*@OnClick(R.id.btn_retry)
-    public void onRetry() {
-        mDeliveriesViewModel.getLiveDataStatus().observe(this, status -> {
-            if (Objects.requireNonNull(status).equalsIgnoreCase(Constants.STR_LOADING)) {
-                displayLoading();
-            } else if (status.equalsIgnoreCase(Constants.STR_LOADED)) {
-                hideLoading();
-                btn_retry.setVisibility(View.GONE);
-                tv_no_internet.setVisibility(View.GONE);
-                rv_deliveries.setVisibility(View.VISIBLE);
-            } else if (status.equalsIgnoreCase(Constants.STR_ERROR)) {
-                hideLoading();
-                btn_retry.setVisibility(View.VISIBLE);
-                tv_no_internet.setVisibility(View.VISIBLE);
-                rv_deliveries.setVisibility(View.GONE);
-            }
-        });
-
-        mDeliveriesViewModel.getListLiveData().observe(this, deliveries -> mDeliveriesAdapter.submitList(deliveries));
-        rv_deliveries.setAdapter(mDeliveriesAdapter);
-    }*/
 }

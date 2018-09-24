@@ -86,13 +86,7 @@ public class DeliveriesAdapter extends PagedListAdapter<Delivery, DeliveriesAdap
                 tv_desc_short.setText(delivery.getDescription().substring(0, 20));
             }
 
-            root_card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    mOnItemClickListener.onItemClick(delivery);
-                }
-            });
+            root_card_view.setOnClickListener(v -> mOnItemClickListener.onItemClick(delivery));
         }
     }
 }

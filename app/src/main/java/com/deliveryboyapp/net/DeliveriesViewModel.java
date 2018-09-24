@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PageKeyedDataSource;
 import android.arch.paging.PagedList;
 
 import com.deliveryboyapp.beans.Delivery;

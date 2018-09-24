@@ -3,7 +3,6 @@ package com.deliveryboyapp.net;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.deliveryboyapp.Constants;
 import com.deliveryboyapp.beans.Delivery;
@@ -51,18 +50,12 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
                         if (listResponse != null) {
 
                             if (listResponse.raw().networkResponse() != null) {
-
-                                Log.e(TAG, "init response came from server");
                                 callback.onResult(listResponse.body(), null, FIRST_PAGE + 1);
 
                             } else if (listResponse.raw().cacheResponse() != null) {
-
-                                Log.e(TAG, "init response came from cache");
                                 callback.onResult(listResponse.body(), null, FIRST_PAGE + 1);
 
                             } else {
-
-                                Log.e(TAG, "init response came from cache is null");
                                 mLiveDataStatus.postValue(Constants.STR_NO_MORE_DATA);
                             }
                         }
@@ -105,19 +98,13 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
                         if (listResponse != null) {
 
                             if (listResponse.raw().cacheResponse() != null) {
-
-                                Log.e(TAG, "response came from cache");
                                 callback.onResult(listResponse.body(), params.key + 1);
 
                             } else if (listResponse.raw().networkResponse() != null) {
-
-                                Log.e(TAG, "response came from server");
                                 callback.onResult(listResponse.body(), params.key + 1);
 
                             } else {
-
                                 mLiveDataStatus.postValue(Constants.STR_NO_MORE_DATA);
-                                Log.e(TAG, "response came from cache is null");
                             }
                         }
                     }

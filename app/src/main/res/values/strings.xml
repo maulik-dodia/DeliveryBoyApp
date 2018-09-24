@@ -7,8 +7,6 @@
     <string name="str_delivery_details">Delivery Details</string>
 
     // Other Strings
-    <string name="str_retry">Retry</string>
-    <string name="str_success">Success</string>
     <string name="str_description">Description</string>
     <string name="str_customer_address">Customer Address</string>
     <string name="str_internet_error">Internet is not available!</string>
