@@ -10,8 +10,8 @@ import com.deliveryboyapp.net.APIEndPoints;
 import com.deliveryboyapp.net.ViewModelFactory;
 
 import java.io.File;
-import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -44,58 +44,64 @@ public class ApplicationModule {
         return mApplicationClass;
     }
 
-    /*@Provides
+    @Provides
     @Singleton
     File provideFile() {
         return new File(mApplicationClass.getCacheDir(), Constants.STR_RESPONSES);
-    }*/
+    }
 
-    /*@Provides
+    @Provides
     @Singleton
     Cache provideCache(File file) {
         int cacheSize = 100 * 1024 * 1024; // 100 MB
         return new Cache(file, cacheSize);
-    }*/
-
-    /*@Provides
-    @Singleton
-    Interceptor provideInterceptor(ApplicationClass applicationClass) {
-
-        return chain -> {
-            Request request = chain.request();
-            if (Utils.isNetworkAvailable(applicationClass)) {
-                request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
-            } else {
-                request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
-            }
-            return chain.proceed(request);
-        };
-
-        *//*return chain -> {
-            Response originalResponse = null;
-            try {
-                originalResponse = chain.proceed(chain.request());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (Utils.isNetworkAvailable(mApplicationClass)) {
-
-                int maxAge = 60; // read from cache for 1 minute
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
-        };*//*
-    }*/
+    }
 
     @Provides
     @Singleton
-    OkHttpClient provideHttpClient(/*Interceptor interceptor, Cache cache*/) {
+    @Named("onlineInterceptor")
+    Interceptor provideOnlineInterceptor(ApplicationClass applicationClass) {
+
+        return chain -> {
+            Response response = chain.proceed(chain.request());
+            String headers = response.header("Cache-Control");
+            if (Utils.isNetworkAvailable(applicationClass)
+                    &&
+                    (headers == null || headers.contains("no-store") || headers.contains("must-revalidate")
+                            || headers.contains("no-cache") || headers.contains("max-age=0"))) {
+
+                Log.e(TAG, "Returning fresh response");
+
+                return response.newBuilder()
+                        .header("Cache-Control", "public, max-age=600")
+                        .build();
+            } else {
+                Log.e(TAG, "Returning old response");
+                return response;
+            }
+        };
+    }
+
+    @Provides
+    @Singleton
+    @Named("offlineInterceptor")
+    Interceptor provideOfflineInterceptor(ApplicationClass applicationClass) {
+
+        return chain -> {
+            Request request = chain.request();
+            if (!Utils.isNetworkAvailable(applicationClass)) {
+                request = request.newBuilder()
+                        .header("Cache-Control", "public, only-if-cached")
+                        .build();
+            }
+            return chain.proceed(request);
+        };
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideHttpClient(@Named("onlineInterceptor") Interceptor onlineInterceptor,
+                                   @Named("offlineInterceptor") Interceptor offlineInterceptor, Cache cache) {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
@@ -103,8 +109,9 @@ public class ApplicationModule {
                     Log.e(TAG, "Called Url: " + request.url());
                     return chain.proceed(request);
                 })
-                /*.addNetworkInterceptor(interceptor)*/
-                /*.cache(cache)*/
+                .addNetworkInterceptor(onlineInterceptor)
+                .addInterceptor(offlineInterceptor)
+                .cache(cache)
                 .build();
 
         return okHttpClient;

@@ -16,7 +16,6 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class DeliveryListActivity extends BaseActivity {
 
@@ -46,16 +45,28 @@ public class DeliveryListActivity extends BaseActivity {
                         true, delivery, false));
 
         deliveriesViewModel.getLiveDataStatus().observe(this, status -> {
+
             if (Objects.requireNonNull(status).equalsIgnoreCase(Constants.STR_LOADING)) {
                 displayLoading();
+
             } else if (status.equalsIgnoreCase(Constants.STR_LOADED)) {
                 hideLoading();
                 tv_no_internet.setVisibility(View.GONE);
                 rv_deliveries.setVisibility(View.VISIBLE);
-            } else if (status.equalsIgnoreCase(Constants.STR_ERROR)) {
+
+            } else if (status.equalsIgnoreCase(Constants.STR_NO_MORE_DATA)) {
+
                 hideLoading();
                 tv_no_internet.setVisibility(View.VISIBLE);
+                rv_deliveries.setVisibility(View.VISIBLE);
+                tv_no_internet.setText(getString(R.string.str_internet_error));
+
+            } else if (status.equalsIgnoreCase(Constants.STR_ERROR)) {
+
+                hideLoading();
                 rv_deliveries.setVisibility(View.GONE);
+                tv_no_internet.setVisibility(View.VISIBLE);
+                tv_no_internet.setText(getString(R.string.str_try_after_some_time_error));
             }
         });
 

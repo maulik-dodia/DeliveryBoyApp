@@ -46,18 +46,24 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
                     @Override
                     public void onNext(Response<List<Delivery>> listResponse) {
 
+                        mLiveDataStatus.postValue(Constants.STR_LOADED);
+
                         if (listResponse != null) {
-
-                            if (listResponse.raw().cacheResponse() != null) {
-
-                                Log.e(TAG, "init response came from cache");
-                                callback.onResult(listResponse.body(), null, FIRST_PAGE + 1);
-                            }
 
                             if (listResponse.raw().networkResponse() != null) {
 
                                 Log.e(TAG, "init response came from server");
                                 callback.onResult(listResponse.body(), null, FIRST_PAGE + 1);
+
+                            } else if (listResponse.raw().cacheResponse() != null) {
+
+                                Log.e(TAG, "init response came from cache");
+                                callback.onResult(listResponse.body(), null, FIRST_PAGE + 1);
+
+                            } else {
+
+                                Log.e(TAG, "init response came from cache is null");
+                                mLiveDataStatus.postValue(Constants.STR_NO_MORE_DATA);
                             }
                         }
                     }
@@ -102,12 +108,16 @@ public class DeliveriesDataSource extends PageKeyedDataSource<Integer, Delivery>
 
                                 Log.e(TAG, "response came from cache");
                                 callback.onResult(listResponse.body(), params.key + 1);
-                            }
 
-                            if (listResponse.raw().networkResponse() != null) {
+                            } else if (listResponse.raw().networkResponse() != null) {
 
                                 Log.e(TAG, "response came from server");
                                 callback.onResult(listResponse.body(), params.key + 1);
+
+                            } else {
+
+                                mLiveDataStatus.postValue(Constants.STR_NO_MORE_DATA);
+                                Log.e(TAG, "response came from cache is null");
                             }
                         }
                     }
